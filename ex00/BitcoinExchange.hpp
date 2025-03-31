@@ -8,11 +8,12 @@
 #include <map>
 #include <algorithm>
 
+typedef std::map<std::string, double> bitcoinMap;
+
 class BitcoinExchange
 {
     private:
-    	std::map<std::string, double> _bitcoinPriceMap;
-    	std::map<std::string, double> _bitcoinDateAmountsMap;
+    	bitcoinMap _bitcoinPrice;
 
     public:
 		BitcoinExchange();
@@ -23,9 +24,11 @@ class BitcoinExchange
 		std::map<std::string, double> &getPriceMap();
 		std::map<std::string, double> &getDateAmountsMap();
 		
-		void parseExchangeRateFile();
-		void parseDateValueFile(const char *inFile);
-		void genOutput(std::map<std::string, double> &priceMap, std::map<std::string, double> &valueMap);
+		void	parseExchangeRateFile();
+		void	genOutputFromInfile(const char *inFile);
+		bool    validDate(std::string &date);
+		bool    validValue(double &price);
+		double	getMultiple(std::string &date);
 
 };
 

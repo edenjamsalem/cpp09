@@ -3,15 +3,12 @@
 int main(int argc, char **argv)
 {
     BitcoinExchange bitcoinExchange;
-    std::string bitcoinDataFile = "data.csv";
 
-    (void)argc;
-    (void)argv;
-    // if (argc != 2)
-    //     throw(incorrectArgCountException())
-
+    if (argc != 2)
+    {
+        std::cerr << "Error: could not open file.\n";
+        return (1);
+    }
     bitcoinExchange.parseExchangeRateFile();
-    bitcoinExchange.parseDateValueFile(argv[1]);
-//    bitcoinExchange.calculateExchange
-    
+    bitcoinExchange.genOutputFromInfile(argv[1]);
 }
