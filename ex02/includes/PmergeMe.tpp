@@ -11,16 +11,18 @@ class PmergeMe
 		~PmergeMe();
 
 		const container_t 	&getNums() const;
-		void mergeInsertSort();
-		void sortIntoPairs();
-		void mergeSortPairs(pairs_t &pairs, int left, int right);
-		void merge(pairs_t &pairs, int left, int right, int mid);
-		void printPairs();
+		void				mergeInsertSort();
 	
 	private:
 		container_t	_nums;
 		pairs_t		_pairs;
 		int			_straggler;
+		
+		void	sortIntoPairs();
+		void	mergeSortPairs(pairs_t &pairs, int left, int right);
+		void	merge(pairs_t &pairs, int left, int right, int mid);
+		void	clearNums();
+		void	printPairs();
 
 };
 
@@ -49,7 +51,6 @@ const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() 
 	return (_nums);
 }
 
-
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::printPairs() 
 {
@@ -64,9 +65,19 @@ void PmergeMe<Container>::printPairs()
 }
 
 template<template<typename, typename> class Container >
+void PmergeMe<Container>::clearNums() 
+{
+	typename container_t::iterator it = _nums.begin();
+	while (it != _nums.end()) {
+		it = _nums.erase(it);
+	}
+}
+
+template<template<typename, typename> class Container >
 void PmergeMe<Container>::mergeInsertSort()
 {
 	sortIntoPairs();
+	clearNums();
 	mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 	printPairs();
 }
