@@ -1,44 +1,7 @@
-#include "headers.hpp"
+#pragma once
+#include "../includes/PmergeMe.hpp"
 
-template<template<typename, typename> class Container >
-class PmergeMe
-{
-	public:
-		typedef Container<int, std::allocator<int> > container_t;
-		typedef Container<std::pair<int,int>, std::allocator<std::pair<int, int> > > pairs_t;
-
-		PmergeMe(char **nums, int size);
-		~PmergeMe();
-
-		const container_t 	&getNums() const;
-		void				mergeInsertSort();
-	
-	private:
-		container_t	_nums;
-		container_t	_buffer;
-		pairs_t		_pairs;
-		int			_size;
-		int			_straggler;
-		
-		void	_sortIntoPairs();
-		void	_mergeSortPairs(pairs_t &pairs, int left, int right);
-		void	_merge(pairs_t &pairs, int left, int right, int mid);
-		void	_clearNums();
-		void	_printPairs();
-		void	_genSequences();
-		std::string getContainerType();
-
-};
-
-template<template<typename, typename> class Container >
-std::ostream& operator<<(std::ostream &os, const PmergeMe<Container> &m)
-{
-	for (typename PmergeMe<Container>::container_t::const_iterator it = m.getNums().begin(); it != m.getNums().end(); it++) {
-		os << *it << " ";
-	}
-	return os;
-}
-
+/* *** CONSTRUCTORS & DESTURCTORS *** */
 template<template<typename, typename> class Container >
 PmergeMe<Container>::PmergeMe(char **nums, int size)
 {
@@ -51,13 +14,17 @@ PmergeMe<Container>::PmergeMe(char **nums, int size)
 template<template<typename, typename> class Container >
 PmergeMe<Container>::~PmergeMe() {}
 
+/* *** GETTERS & SETTERS *** */
+
 template<template<typename, typename> class Container >
 const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() const {
 	return (_nums);
 }
 
+/* *** MISC FNS *** */
+
 template<template<typename, typename> class Container >
-std::string PmergeMe<Container>::getContainerType()
+std::string PmergeMe<Container>::_getContainerType()
 {
 	std::string typeData = typeid(container_t).name();	
 	if (typeData == "St6vectorIiSaIiEE")
@@ -82,14 +49,7 @@ void PmergeMe<Container>::_printPairs()
 	std::cout << std::endl;
 }
 
-template<template<typename, typename> class Container >
-void PmergeMe<Container>::_clearNums() 
-{
-	typename container_t::iterator it = _nums.begin();
-	while (it != _nums.end()) {
-		it = _nums.erase(it);
-	}
-}
+/* *** MERGE INSERTION SORT FNS *** */
 
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::mergeInsertSort()
@@ -98,13 +58,13 @@ void PmergeMe<Container>::mergeInsertSort()
 
 	_sortIntoPairs();
 	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
-	_printPairs(); // testing only
+//	_printPairs(); // testing only
 	_genSequences();
 	
 	std::clock_t end = std::clock();
 	double time_taken = end - start * 1000000.0 / CLOCKS_PER_SEC;
 	std::cout << YELLOW << "Time taken to process a range of " << _size; 
-	std::cout << " elements with " << getContainerType() << " : ";
+	std::cout << " elements with " << _getContainerType() << " : ";
 	std::cout << std::fixed << time_taken << " us" << RESET << std::endl;
 }
 

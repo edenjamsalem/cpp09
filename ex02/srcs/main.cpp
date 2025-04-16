@@ -1,4 +1,4 @@
-#include "../includes/headers.hpp"
+#include "../includes/PmergeMe.hpp"
 
 int main(int argc, char **argv)
 {
@@ -17,8 +17,6 @@ int main(int argc, char **argv)
 		mergeList.mergeInsertSort();
 		mergeDeque.mergeInsertSort();
 		std::cout << "After: " << mergeVec << std::endl;
-
-
 	}
 	catch (std::exception &e)
 	{
