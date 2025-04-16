@@ -17,6 +17,7 @@ class PmergeMe
 		container_t	_nums;
 		container_t	_buffer;
 		pairs_t		_pairs;
+		int			_size;
 		int			_straggler;
 		
 		void	_sortIntoPairs();
@@ -44,6 +45,7 @@ PmergeMe<Container>::PmergeMe(char **nums, int size)
 	for (int i = 0; i < size; i++) {
 		_nums.push_back(safe_strtoi(nums[i]));
 	}
+	_size = size;
 }
 
 template<template<typename, typename> class Container >
@@ -54,17 +56,16 @@ const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() 
 	return (_nums);
 }
 
-
 template<template<typename, typename> class Container >
 std::string PmergeMe<Container>::getContainerType()
 {
 	std::string typeData = typeid(container_t).name();	
 	if (typeData == "St6vectorIiSaIiEE")
-		return ("std::vector<int>");
+		return ("std::vector");
 	else if (typeData == "NSt7__cxx114listIiSaIiEEE")
-		return ("std::list<int>");
+		return ("std::list");
 	else if (typeData == "St5dequeIiSaIiEE")
-		return ("std::deque<int>");
+		return ("std::deque");
 	return ("unknown container");
 }
 
@@ -101,8 +102,10 @@ void PmergeMe<Container>::mergeInsertSort()
 	_genSequences();
 	
 	std::clock_t end = std::clock();
-	double time_taken = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-	std::cout << YELLOW << "Time taken for " << getContainerType() << ": " << time_taken << RESET << std::endl;
+	double time_taken = end - start * 1000000.0 / CLOCKS_PER_SEC;
+	std::cout << YELLOW << "Time taken to process a range of " << _size; 
+	std::cout << " elements with " << getContainerType() << " : ";
+	std::cout << std::fixed << time_taken << " us" << RESET << std::endl;
 }
 
 template<template<typename, typename> class Container >
