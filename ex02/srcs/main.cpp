@@ -8,10 +8,12 @@ int main(int argc, char **argv)
 	}
 	try 
 	{
-		PmergeMe<std::vector<int> > mergeVec(argv + 1, argc - 1);
-		PmergeMe<std::list<int> > mergeList(argv + 1, argc - 1);
+		PmergeMe<std::vector> mergeVec(argv + 1, argc - 1);
+		PmergeMe<std::list> mergeList(argv + 1, argc - 1);
 
 		std::cout << "Before: " << mergeVec << std::endl;
+		mergeVec.mergeInsertSort();
+		mergeList.mergeInsertSort();
 		std::cout << "After: " << mergeVec << std::endl;
 
 

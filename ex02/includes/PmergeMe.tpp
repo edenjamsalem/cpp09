@@ -1,47 +1,76 @@
 #include "headers.hpp"
 
-template<typename T>
+template<template<typename, typename> class Container >
 class PmergeMe
 {
-	private:
-		T	_nums;
-
 	public:
-		PmergeMe();
+		typedef Container<int, std::allocator<int> > container_t;
+		typedef Container<std::pair<int,int>, std::allocator<std::pair<int, int> > > pairs_t;
+
 		PmergeMe(char **nums, int size);
 		~PmergeMe();
 
-		const T 	&getNums() const;
-		void sort();
+		const container_t 	&getNums() const;
+		void mergeInsertSort();
+		void sortPairs();
+	
+	private:
+		container_t	_nums;
+		pairs_t		_pairs;
+		int			_straggler;
+
 };
 
-template <typename T>
-std::ostream& operator<<(std::ostream &os, const PmergeMe<T> &m)
+template<template<typename, typename> class Container >
+std::ostream& operator<<(std::ostream &os, const PmergeMe<Container> &m)
 {
-	for (typename T::const_iterator it = m.getNums().begin(); it != m.getNums().end(); it++) {
+	for (typename PmergeMe<Container>::container_t::const_iterator it = m.getNums().begin(); it != m.getNums().end(); it++) {
 		os << *it << " ";
 	}
 	return os;
 }
 
-template <typename T>
-PmergeMe<T>::PmergeMe(char **nums, int size)
+template<template<typename, typename> class Container >
+PmergeMe<Container>::PmergeMe(char **nums, int size)
 {
 	for (int i = 0; i < size; i++) {
 		_nums.push_back(safe_strtoi(nums[i]));
 	}
 }
 
-template <typename T>
-PmergeMe<T>::~PmergeMe() {}
+template<template<typename, typename> class Container >
+PmergeMe<Container>::~PmergeMe() {}
 
-template <typename T>
-const T &PmergeMe<T>::getNums() const {
+template<template<typename, typename> class Container >
+const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() const {
 	return (_nums);
 }
 
-template <typename T>
-void PmergeMe<T>::sort()
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::mergeInsertSort()
 {
-
+	sortPairs();
 }
+
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::sortPairs()
+{
+	typename PmergeMe<Container>::container_t::const_iterator it = _nums.begin();
+	while (it != _nums.end())
+	{
+		typename PmergeMe<Container>::container_t::const_iterator next_it = it;
+		++next_it;
+		
+		if (next_it == _nums.end()) {
+			_straggler = *it;
+			break ;
+		}
+		std::pair<int,int> pair;
+		pair.first = *it;
+		pair.second = *next_it;
+		_pairs.push_back(pair);
+		++it;
+		++it;
+	}
+}
+
