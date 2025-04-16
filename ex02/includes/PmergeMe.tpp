@@ -15,6 +15,7 @@ class PmergeMe
 	
 	private:
 		container_t	_nums;
+		container_t	_buffer;
 		pairs_t		_pairs;
 		int			_straggler;
 		
@@ -23,7 +24,7 @@ class PmergeMe
 		void	_merge(pairs_t &pairs, int left, int right, int mid);
 		void	_clearNums();
 		void	_printPairs();
-		void	_pushLargerIntoNums();
+		void	_genSequences();
 
 };
 
@@ -80,7 +81,7 @@ void PmergeMe<Container>::mergeInsertSort()
 	_sortIntoPairs();
 	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 	_printPairs(); // testing only
-	_pushLargerIntoNums();
+	_genSequences();
 }
 
 template<template<typename, typename> class Container >
@@ -177,9 +178,10 @@ void PmergeMe<Container>::_merge(pairs_t &pairs, int left, int right, int mid)
 }
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::_pushLargerIntoNums()
+void PmergeMe<Container>::_genSequences()
 {
 	for (typename pairs_t::iterator it = _pairs.begin(); it != _pairs.end(); ++it) {
 		_nums.push_back(it->first);
+		_buffer.push_back(it->second);
 	}
 }
