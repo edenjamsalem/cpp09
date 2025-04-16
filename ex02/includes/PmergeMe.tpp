@@ -18,11 +18,12 @@ class PmergeMe
 		pairs_t		_pairs;
 		int			_straggler;
 		
-		void	sortIntoPairs();
-		void	mergeSortPairs(pairs_t &pairs, int left, int right);
-		void	merge(pairs_t &pairs, int left, int right, int mid);
-		void	clearNums();
-		void	printPairs();
+		void	_sortIntoPairs();
+		void	_mergeSortPairs(pairs_t &pairs, int left, int right);
+		void	_merge(pairs_t &pairs, int left, int right, int mid);
+		void	_clearNums();
+		void	_printPairs();
+		void	_pushLargerIntoNums();
 
 };
 
@@ -52,7 +53,7 @@ const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() 
 }
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::printPairs() 
+void PmergeMe<Container>::_printPairs() 
 {
 	std::cout << "Pairs: ";
 
@@ -65,7 +66,7 @@ void PmergeMe<Container>::printPairs()
 }
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::clearNums() 
+void PmergeMe<Container>::_clearNums() 
 {
 	typename container_t::iterator it = _nums.begin();
 	while (it != _nums.end()) {
@@ -76,13 +77,14 @@ void PmergeMe<Container>::clearNums()
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::mergeInsertSort()
 {
-	sortIntoPairs();
-	mergeSortPairs(_pairs, 0, _pairs.size() - 1);
-	printPairs();
+	_sortIntoPairs();
+	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
+	_printPairs(); // testing only
+	_pushLargerIntoNums();
 }
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::sortIntoPairs()
+void PmergeMe<Container>::_sortIntoPairs()
 {
 	typename container_t::iterator it = _nums.begin();
 	while (_nums.size() > 0)
@@ -106,19 +108,19 @@ void PmergeMe<Container>::sortIntoPairs()
 }
 
 template<template<typename, typename> class Container>
-void PmergeMe<Container>::mergeSortPairs(pairs_t &pairs, int left, int right)
+void PmergeMe<Container>::_mergeSortPairs(pairs_t &pairs, int left, int right)
 {
     if (left < right)
 	{
         int mid = left + (right - left) / 2;
-        mergeSortPairs(pairs, left, mid);
-        mergeSortPairs(pairs, mid + 1, right);
-        merge(pairs, left, right, mid);
+        _mergeSortPairs(pairs, left, mid);
+        _mergeSortPairs(pairs, mid + 1, right);
+        _merge(pairs, left, right, mid);
     }
 }
 
 template<template<typename, typename> class Container>
-void PmergeMe<Container>::merge(pairs_t &pairs, int left, int right, int mid)
+void PmergeMe<Container>::_merge(pairs_t &pairs, int left, int right, int mid)
 {
     pairs_t tmpLeft;
     pairs_t tmpRight;
@@ -172,4 +174,12 @@ void PmergeMe<Container>::merge(pairs_t &pairs, int left, int right, int mid)
         ++rightIt;
         ++it;
     }
+}
+
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::_pushLargerIntoNums()
+{
+	for (typename pairs_t::iterator it = _pairs.begin(); it != _pairs.end(); ++it) {
+		_nums.push_back(it->first);
+	}
 }
