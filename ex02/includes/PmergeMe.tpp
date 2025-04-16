@@ -11,9 +11,18 @@ class PmergeMe
 		PmergeMe(char **nums, int size);
 		~PmergeMe();
 
+		const T 	&getNums() const;
 		void sort();
-		void print();
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream &os, const PmergeMe<T> &m)
+{
+	for (typename T::const_iterator it = m.getNums().begin(); it != m.getNums().end(); it++) {
+		os << *it << " ";
+	}
+	return os;
+}
 
 template <typename T>
 PmergeMe<T>::PmergeMe(char **nums, int size)
@@ -27,16 +36,12 @@ template <typename T>
 PmergeMe<T>::~PmergeMe() {}
 
 template <typename T>
-void PmergeMe<T>::sort()
-{
-
+const T &PmergeMe<T>::getNums() const {
+	return (_nums);
 }
 
 template <typename T>
-void PmergeMe<T>::print()
+void PmergeMe<T>::sort()
 {
-	for (typename T::iterator it = _nums.begin(); it != _nums.end(); it++) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
+
 }
