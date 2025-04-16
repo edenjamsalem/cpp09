@@ -11,8 +11,11 @@ int main(int argc, char **argv)
 		PmergeMe<std::vector<int> > mergeVec(argv + 1, argc - 1);
 		PmergeMe<std::list<int> > mergeList(argv + 1, argc - 1);
 
+		mergeVec.print();
+		mergeList.print();
 		// mergeVec.sort();
 		// mergeList.sort();
+
 	}
 	catch (std::exception &e)
 	{
