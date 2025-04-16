@@ -6,12 +6,10 @@
 #include <sstream>
 #include <ctime>
 #include <typeinfo>
+#include "colours.hpp"
 
 // UTILS
 int safe_strtoi(const char* str);
-
-#include "colours.hpp"
-#include "PmergeMe.hpp"
 
 template<template<typename, typename> class Container >
 class PmergeMe
