@@ -77,7 +77,6 @@ template<template<typename, typename> class Container >
 void PmergeMe<Container>::mergeInsertSort()
 {
 	sortIntoPairs();
-	clearNums();
 	mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 	printPairs();
 }
@@ -85,25 +84,24 @@ void PmergeMe<Container>::mergeInsertSort()
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::sortIntoPairs()
 {
-	typename container_t::const_iterator it = _nums.begin();
-	while (it != _nums.end())
+	typename container_t::iterator it = _nums.begin();
+	while (_nums.size() > 0)
 	{
-		typename PmergeMe<Container>::container_t::const_iterator next_it = it;
-		++next_it;
-		
-		if (next_it == _nums.end()) {
+		if (_nums.size() == 1) {
 			_straggler = *it;
+			_nums.erase(it);
 			break ;
 		}
 		std::pair<int,int> pair;
 		pair.first = *it;
-		pair.second = *next_it;
+		it = _nums.erase(it);
+
+		pair.second = *it;
+		it = _nums.erase(it);
 
 		if (pair.first < pair.second)
 			std::swap(pair.first, pair.second);
 		_pairs.push_back(pair);
-		++it;
-		++it;
 	}
 }
 
