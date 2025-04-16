@@ -25,6 +25,7 @@ class PmergeMe
 		void	_clearNums();
 		void	_printPairs();
 		void	_genSequences();
+		std::string getContainerType();
 
 };
 
@@ -53,6 +54,20 @@ const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() 
 	return (_nums);
 }
 
+
+template<template<typename, typename> class Container >
+std::string PmergeMe<Container>::getContainerType()
+{
+	std::string typeData = typeid(container_t).name();	
+	if (typeData == "St6vectorIiSaIiEE")
+		return ("std::vector<int>");
+	else if (typeData == "NSt7__cxx114listIiSaIiEEE")
+		return ("std::list<int>");
+	else if (typeData == "St5dequeIiSaIiEE")
+		return ("std::deque<int>");
+	return ("unknown container");
+}
+
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::_printPairs() 
 {
@@ -78,10 +93,16 @@ void PmergeMe<Container>::_clearNums()
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::mergeInsertSort()
 {
+	std::clock_t start = std::clock();
+
 	_sortIntoPairs();
 	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 	_printPairs(); // testing only
 	_genSequences();
+	
+	std::clock_t end = std::clock();
+	double time_taken = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+	std::cout << YELLOW << "Time taken for " << getContainerType() << ": " << time_taken << RESET << std::endl;
 }
 
 template<template<typename, typename> class Container >

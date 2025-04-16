@@ -10,10 +10,12 @@ int main(int argc, char **argv)
 	{
 		PmergeMe<std::vector> mergeVec(argv + 1, argc - 1);
 		PmergeMe<std::list> mergeList(argv + 1, argc - 1);
+		PmergeMe<std::deque> mergeDeque(argv + 1, argc - 1);
 
 		std::cout << "Before: " << mergeVec << std::endl;
 		mergeVec.mergeInsertSort();
 		mergeList.mergeInsertSort();
+		mergeDeque.mergeInsertSort();
 		std::cout << "After: " << mergeVec << std::endl;
 
 

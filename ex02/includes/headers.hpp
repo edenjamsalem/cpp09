@@ -3,8 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <cstring>
+#include <deque>
 #include <sstream>
+#include <ctime>
+#include <typeinfo>
 
 // UTILS
 int safe_strtoi(const char* str);
