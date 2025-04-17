@@ -63,7 +63,7 @@ void PmergeMe<Container>::_printPairs()
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::printTimeTaken() 
 {
-	std::cout << "Time to process a range of " << _size << " elements with " << getContainerType() << ": " << _timeTaken << " us\n";
+	std::cout << "Time to process a range of " << CYAN << _size << RESET << " elements with " << CYAN << getContainerType() << RESET << ": " << YELLOW << _timeTaken << " us\n" << RESET;
 } 
 
 template<template<typename, typename> class Container >
@@ -254,21 +254,6 @@ void	PmergeMe<Container>::_genJacobsthalSeq()
 	}
 }
 
-// template<template<typename, typename> class Container >
-// void	PmergeMe<Container>::_insertJacobsthalNums()
-// {
-// 	int prev = 0;
-// 	typename container_t::iterator buffer_it = _buffer.begin();
-// 	for (typename container_t::iterator jacob_it = _jacobsthal.begin(); jacob_it != _jacobsthal.end(); ++jacob_it) {
-// 		int current = *jacob_it;
-// 		_advance(buffer_it, current - prev);
-// 		if (buffer_it == _buffer.end())
-// 			break ;
-// 		_binaryInsert(*buffer_it);
-// 		buffer_it = _buffer.erase(buffer_it);
-// 		prev = (current > 0) ? current - 1 : 0;
-// 	}
-// }
 template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_insertJacobsthalNums()
 {
@@ -283,6 +268,7 @@ void	PmergeMe<Container>::_insertJacobsthalNums()
 		_buffer.erase(buffer_it);
 	}
 }
+
 template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_insertRemainingNums()
 {
