@@ -3,10 +3,7 @@
 
 /* *** CONSTRUCTORS & DESTURCTORS *** */
 template<template<typename, typename> class Container >
-PmergeMe<Container>::PmergeMe()
-{
-
-}
+PmergeMe<Container>::PmergeMe() {}
 
 template<template<typename, typename> class Container >
 PmergeMe<Container>::~PmergeMe() {}
@@ -14,14 +11,29 @@ PmergeMe<Container>::~PmergeMe() {}
 /* *** GETTERS & SETTERS *** */
 
 template<template<typename, typename> class Container >
-const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() const {
+const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getSorted() const {
 	return (_mainChain);
 }
 
-/* *** MISC FNS *** */
+template<template<typename, typename> class Container >
+const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getInitial() const {
+	return (_initial);
+}
 
 template<template<typename, typename> class Container >
-std::string PmergeMe<Container>::_getContainerType()
+std::string PmergeMe<Container>::getContainerElems(const container_t &c) 
+{
+	std::stringstream ss;
+	typename container_t::const_iterator it = c.begin();
+	while (it != c.end()) {
+		ss << *it << " ";
+		++it;
+	}
+	return (ss.str());
+}
+
+template<template<typename, typename> class Container >
+std::string PmergeMe<Container>::getContainerType()
 {
 	std::string typeData = typeid(container_t).name();	
 	if (typeData == "St6vectorIiSaIiEE")
@@ -32,6 +44,8 @@ std::string PmergeMe<Container>::_getContainerType()
 		return ("std::deque");
 	return ("unknown container");
 }
+
+/* *** MISC FNS *** */
 
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::_printPairs() 
@@ -45,6 +59,12 @@ void PmergeMe<Container>::_printPairs()
 	}
 	std::cout << std::endl;
 }
+
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::printTimeTaken() 
+{
+	std::cout << "Time to process a range of " << _size << " elements with " << getContainerType() << ": " << _timeTaken << " us\n";
+} 
 
 template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_parseInput(char **nums, int size)
@@ -66,7 +86,7 @@ void	PmergeMe<Container>::_genJacobsthalSeq()
 		_jacobsthal.push_back(0);
 	if (size > 1)
 		_jacobsthal.push_back(1);
-	if (size < 2)
+	if (size < 3)
 		return ;
 	j0 = 1;	
 	j1 = 1;	
@@ -106,10 +126,7 @@ void PmergeMe<Container>::mergeInsertSort(char **nums, int size)
 	_genJacobsthalSeq();
 	
 	std::clock_t end = std::clock();
-	double time_taken = end - start * 1000000.0 / CLOCKS_PER_SEC;
-	std::cout << YELLOW << "Time taken to process a range of " << _size; 
-	std::cout << " elements with " << _getContainerType() << " : ";
-	std::cout << std::fixed << time_taken << " us" << RESET << std::endl;
+	_timeTaken = end - start * 1000000.0 / CLOCKS_PER_SEC;
 }
 
 template<template<typename, typename> class Container >

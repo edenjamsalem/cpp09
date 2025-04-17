@@ -12,11 +12,14 @@ int main(int argc, char **argv)
 		PmergeMe<std::list>		mergeList;
 		PmergeMe<std::deque>	mergeDeque;
 
-		std::cout << "Before: " << mergeVec << std::endl;
 		mergeVec.mergeInsertSort(argv + 1, argc - 1);
 		mergeList.mergeInsertSort(argv + 1, argc - 1);
 		mergeDeque.mergeInsertSort(argv + 1, argc - 1);
-		std::cout << "After: " << mergeVec << std::endl;
+		std::cout << "Before: " << mergeVec.getContainerElems(mergeVec.getInitial()) << std::endl;
+		std::cout << "After: " << mergeVec.getContainerElems(mergeVec.getSorted()) << std::endl;
+		mergeVec.printTimeTaken();
+		mergeList.printTimeTaken();
+		mergeDeque.printTimeTaken();
 	}
 	catch (std::exception &e)
 	{

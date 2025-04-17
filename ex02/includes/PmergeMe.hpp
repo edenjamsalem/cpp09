@@ -21,8 +21,12 @@ class PmergeMe
 		PmergeMe();
 		~PmergeMe();
 
-		const container_t 	&getNums() const;
+		const container_t 	&getInitial() const;
+		const container_t 	&getSorted() const;
+		std::string 		getContainerType();
+		std::string			getContainerElems(const container_t &c);
 		void				mergeInsertSort(char **nums, int size);
+		void				printTimeTaken();
 	
 	private:
 		container_t		_initial;
@@ -32,9 +36,9 @@ class PmergeMe
 		pairs_t			_pairs;
 		int				_size;
 		int				_straggler;
+		double			_timeTaken;
 		
 		void		_parseInput(char **nums, int size);
-		std::string _getContainerType();
 		void		_printPairs(); // testing only
 
 		void		_sortIntoPairs();
@@ -52,10 +56,9 @@ class PmergeMe
 template<template<typename, typename> class Container >
 std::ostream& operator<<(std::ostream &os, const PmergeMe<Container> &m)
 {
-	for (typename PmergeMe<Container>::container_t::const_iterator it = m.getNums().begin(); it != m.getNums().end(); it++) {
+	for (typename PmergeMe<Container>::container_t::const_iterator it = m.getSorted().begin(); it != m.getSorted().end(); it++) {
 		os << *it << " ";
 	}
 	return os;
 }
-
 #include "../srcs/PmergeMe.tpp"
