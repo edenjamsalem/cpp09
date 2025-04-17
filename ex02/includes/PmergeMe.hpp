@@ -25,19 +25,27 @@ class PmergeMe
 		void				mergeInsertSort(char **nums, int size);
 	
 	private:
-		container_t	_nums;
-		container_t	_buffer;
-		pairs_t		_pairs;
-		int			_size;
-		int			_straggler;
+		container_t		_initial;
+		container_t		_buffer;
+		container_t		_mainChain;
+		container_t		_jacobsthal;
+		pairs_t			_pairs;
+		int				_size;
+		int				_straggler;
 		
 		void		_parseInput(char **nums, int size);
+		std::string _getContainerType();
+		void		_printPairs(); // testing only
+
 		void		_sortIntoPairs();
 		void		_mergeSortPairs(pairs_t &pairs, int left, int right);
 		void		_merge(pairs_t &pairs, int left, int right, int mid);
-		void		_printPairs(); // testing only
-		void		_genSequences();
-		std::string _getContainerType();
+		void		_splitSortedMainChain();
+		void		_binaryInsert(int value);
+		void		_genJacobsthalSeq();
+		void		_insertJacobsthalNums();
+		void		_insertRemainingNums();
+		void		_advance(typename container_t::iterator &it, int d);
 
 };
 

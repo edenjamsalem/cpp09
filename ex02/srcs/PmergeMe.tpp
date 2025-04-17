@@ -15,7 +15,7 @@ PmergeMe<Container>::~PmergeMe() {}
 
 template<template<typename, typename> class Container >
 const typename PmergeMe<Container>::container_t &PmergeMe<Container>::getNums() const {
-	return (_nums);
+	return (_mainChain);
 }
 
 /* *** MISC FNS *** */
@@ -50,9 +50,45 @@ template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_parseInput(char **nums, int size)
 {
 	for (int i = 0; i < size; i++) {
-		_nums.push_back(safe_strtoi(nums[i]));
+		_initial.push_back(safe_strtoi(nums[i]));
 	}
 	_size = size;
+}
+
+template<template<typename, typename> class Container >
+void	PmergeMe<Container>::_genJacobsthalSeq()
+{
+	size_t size = _buffer.size();
+	std::cout << "Size: " << size << std::endl;
+	size_t j0, j1, j2;
+
+	if (size > 0)
+		_jacobsthal.push_back(0);
+	if (size > 1)
+		_jacobsthal.push_back(1);
+	if (size < 2)
+		return ;
+	j0 = 1;	
+	j1 = 1;	
+	j2 = j1 + (2 * j0);	
+	while (j2 < size) {
+		_jacobsthal.push_back(j2);
+		j0 = j1;
+		j1 = j2;
+		j2 = j1 + (2 * j0);	
+	}
+	std::cout << "Jacob: ";
+	for (typename container_t::iterator it = _jacobsthal.begin(); it != _jacobsthal.end(); it++) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+}
+
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::_advance(typename PmergeMe<Container>::container_t::iterator &it, int d)
+{
+	while (it != _mainChain.end() && d-- > 0)
+		it++;
 }
 
 /* *** MERGE INSERTION SORT FNS *** */
@@ -66,7 +102,8 @@ void PmergeMe<Container>::mergeInsertSort(char **nums, int size)
 	_sortIntoPairs();
 	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 //	_printPairs(); // testing only
-	_genSequences();
+	_splitSortedMainChain();
+	_genJacobsthalSeq();
 	
 	std::clock_t end = std::clock();
 	double time_taken = end - start * 1000000.0 / CLOCKS_PER_SEC;
@@ -78,20 +115,20 @@ void PmergeMe<Container>::mergeInsertSort(char **nums, int size)
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::_sortIntoPairs()
 {
-	typename container_t::iterator it = _nums.begin();
-	while (_nums.size() > 0)
+	typename container_t::iterator it = _initial.begin();
+	while (it != _initial.end())
 	{
-		if (_nums.size() == 1) {
+		typename container_t::iterator next_it = it;
+		next_it++;
+		if (next_it == _initial.end()) {
 			_straggler = *it;
-			_nums.erase(it);
 			break ;
 		}
 		std::pair<int,int> pair;
 		pair.first = *it;
-		it = _nums.erase(it);
-
+		it++;
 		pair.second = *it;
-		it = _nums.erase(it);
+		it++;
 
 		if (pair.first < pair.second)
 			std::swap(pair.first, pair.second);
@@ -169,10 +206,36 @@ void PmergeMe<Container>::_merge(pairs_t &pairs, int left, int right, int mid)
 }
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::_genSequences()
+void PmergeMe<Container>::_splitSortedMainChain()
 {
 	for (typename pairs_t::iterator it = _pairs.begin(); it != _pairs.end(); ++it) {
-		_nums.push_back(it->first);
+		_mainChain.push_back(it->first);
 		_buffer.push_back(it->second);
 	}
+}
+
+template<template<typename, typename> class Container >
+void PmergeMe<Container>::_binaryInsert(int value)
+{
+    size_t left = 0;
+    size_t right = _mainChain.size();
+	size_t	mid;
+
+    while (left < right)
+	{
+        mid = left + (right - left) / 2;
+		typename container_t::iterator it = _mainChain.begin();
+		for (size_t i = 0; i < mid; i++)
+			it++;
+
+        if (*it < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+	typename container_t::iterator insert_it = _mainChain.begin();
+	for (size_t i = 0; i < mid; i++)
+		insert_it++;
+
+    _mainChain.insert(insert_it, value);
 }
