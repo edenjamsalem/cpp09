@@ -18,11 +18,11 @@ class PmergeMe
 		typedef Container<int, std::allocator<int> > container_t;
 		typedef Container<std::pair<int,int>, std::allocator<std::pair<int, int> > > pairs_t;
 
-		PmergeMe(char **nums, int size);
+		PmergeMe();
 		~PmergeMe();
 
 		const container_t 	&getNums() const;
-		void				mergeInsertSort();
+		void				mergeInsertSort(char **nums, int size);
 	
 	private:
 		container_t	_nums;
@@ -31,6 +31,7 @@ class PmergeMe
 		int			_size;
 		int			_straggler;
 		
+		void		_parseInput(char **nums, int size);
 		void		_sortIntoPairs();
 		void		_mergeSortPairs(pairs_t &pairs, int left, int right);
 		void		_merge(pairs_t &pairs, int left, int right, int mid);

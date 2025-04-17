@@ -3,12 +3,9 @@
 
 /* *** CONSTRUCTORS & DESTURCTORS *** */
 template<template<typename, typename> class Container >
-PmergeMe<Container>::PmergeMe(char **nums, int size)
+PmergeMe<Container>::PmergeMe()
 {
-	for (int i = 0; i < size; i++) {
-		_nums.push_back(safe_strtoi(nums[i]));
-	}
-	_size = size;
+
 }
 
 template<template<typename, typename> class Container >
@@ -49,13 +46,23 @@ void PmergeMe<Container>::_printPairs()
 	std::cout << std::endl;
 }
 
+template<template<typename, typename> class Container >
+void	PmergeMe<Container>::_parseInput(char **nums, int size)
+{
+	for (int i = 0; i < size; i++) {
+		_nums.push_back(safe_strtoi(nums[i]));
+	}
+	_size = size;
+}
+
 /* *** MERGE INSERTION SORT FNS *** */
 
 template<template<typename, typename> class Container >
-void PmergeMe<Container>::mergeInsertSort()
+void PmergeMe<Container>::mergeInsertSort(char **nums, int size)
 {
 	std::clock_t start = std::clock();
 
+	_parseInput(nums, size);
 	_sortIntoPairs();
 	_mergeSortPairs(_pairs, 0, _pairs.size() - 1);
 //	_printPairs(); // testing only

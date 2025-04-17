@@ -8,14 +8,14 @@ int main(int argc, char **argv)
 	}
 	try 
 	{
-		PmergeMe<std::vector> mergeVec(argv + 1, argc - 1);
-		PmergeMe<std::list> mergeList(argv + 1, argc - 1);
-		PmergeMe<std::deque> mergeDeque(argv + 1, argc - 1);
+		PmergeMe<std::vector>	mergeVec;
+		PmergeMe<std::list>		mergeList;
+		PmergeMe<std::deque>	mergeDeque;
 
 		std::cout << "Before: " << mergeVec << std::endl;
-		mergeVec.mergeInsertSort();
-		mergeList.mergeInsertSort();
-		mergeDeque.mergeInsertSort();
+		mergeVec.mergeInsertSort(argv + 1, argc - 1);
+		mergeList.mergeInsertSort(argv + 1, argc - 1);
+		mergeDeque.mergeInsertSort(argv + 1, argc - 1);
 		std::cout << "After: " << mergeVec << std::endl;
 	}
 	catch (std::exception &e)
