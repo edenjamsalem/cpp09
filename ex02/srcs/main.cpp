@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 		mergeVec.mergeInsertSort(argv + 1, argc - 1);
 		mergeList.mergeInsertSort(argv + 1, argc - 1);
 		mergeDeque.mergeInsertSort(argv + 1, argc - 1);
+		
 		std::cout << "Before: " << mergeVec.getContainerElems(mergeVec.getInitial()) << std::endl;
 		std::cout << "After: " << mergeVec.getContainerElems(mergeVec.getSorted()) << std::endl;
 		mergeVec.printTimeTaken();
