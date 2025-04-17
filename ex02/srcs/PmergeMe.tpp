@@ -96,14 +96,16 @@ void PmergeMe<Container>::mergeInsertSort(char **nums, int size)
 	_splitSortedMainChain();
 	_genJacobsthalSeq();
 	_insertJacobsthalNums();
+	_insertRemainingNums();
 	
 	std::clock_t end = std::clock();
-	_timeTaken = end - start * 1000000.0 / CLOCKS_PER_SEC;
+	_timeTaken = (end - start) * 1000000.0 / CLOCKS_PER_SEC;
 }
 
 template<template<typename, typename> class Container >
 void PmergeMe<Container>::_sortIntoPairs()
 {
+	_straggler = -1;
 	typename container_t::iterator it = _initial.begin();
 	while (it != _initial.end())
 	{
@@ -216,7 +218,7 @@ void PmergeMe<Container>::_binaryInsert(int value)
 		for (size_t i = 0; i < mid; i++)
 			it++;
 
-        if (*it < value)
+        if (it != _mainChain.end() && *it < value)
             left = mid + 1;
         else
             right = mid;
@@ -232,7 +234,6 @@ template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_genJacobsthalSeq()
 {
 	size_t size = _buffer.size();
-	std::cout << "Size: " << size << std::endl;
 	size_t j0, j1, j2;
 
 	if (size > 0)
@@ -241,6 +242,7 @@ void	PmergeMe<Container>::_genJacobsthalSeq()
 		_jacobsthal.push_back(1);
 	if (size < 3)
 		return ;
+
 	j0 = 1;	
 	j1 = 1;	
 	j2 = j1 + (2 * j0);	
@@ -250,22 +252,45 @@ void	PmergeMe<Container>::_genJacobsthalSeq()
 		j1 = j2;
 		j2 = j1 + (2 * j0);	
 	}
-	std::cout << "Jacob: ";
-	for (typename container_t::iterator it = _jacobsthal.begin(); it != _jacobsthal.end(); ++it) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
 }
 
+// template<template<typename, typename> class Container >
+// void	PmergeMe<Container>::_insertJacobsthalNums()
+// {
+// 	int prev = 0;
+// 	typename container_t::iterator buffer_it = _buffer.begin();
+// 	for (typename container_t::iterator jacob_it = _jacobsthal.begin(); jacob_it != _jacobsthal.end(); ++jacob_it) {
+// 		int current = *jacob_it;
+// 		_advance(buffer_it, current - prev);
+// 		if (buffer_it == _buffer.end())
+// 			break ;
+// 		_binaryInsert(*buffer_it);
+// 		buffer_it = _buffer.erase(buffer_it);
+// 		prev = (current > 0) ? current - 1 : 0;
+// 	}
+// }
 template<template<typename, typename> class Container >
 void	PmergeMe<Container>::_insertJacobsthalNums()
 {
-	int prev = 0;
-	typename container_t::iterator buffer_it = _buffer.begin();
-	for (typename container_t::iterator jacob_it = _jacobsthal.begin(); jacob_it != _jacobsthal.end(); ++jacob_it) {
-		int current = *jacob_it;
-		_advance(buffer_it, current - prev);
+	for (typename container_t::iterator jacob_it = _jacobsthal.begin(); jacob_it != _jacobsthal.end(); ++jacob_it)
+	{
+		typename container_t::iterator buffer_it = _buffer.begin();
+		int step = (*jacob_it > 0) ? *jacob_it - 1 : 0;
+		_advance(buffer_it, step);
+		if (buffer_it == _buffer.end())
+			break ;
 		_binaryInsert(*buffer_it);
-		prev = current;
+		_buffer.erase(buffer_it);
 	}
+}
+template<template<typename, typename> class Container >
+void	PmergeMe<Container>::_insertRemainingNums()
+{
+	typename container_t::iterator buffer_it = _buffer.begin();
+	while (buffer_it != _buffer.end()) {
+		_binaryInsert(*buffer_it);
+		buffer_it = _buffer.erase(buffer_it);
+	}
+	if (_straggler != -1)
+		_binaryInsert(_straggler);
 }

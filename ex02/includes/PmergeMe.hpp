@@ -40,6 +40,7 @@ class PmergeMe
 		
 		void		_parseInput(char **nums, int size);
 		void		_printPairs(); // testing only
+		void		_advance(typename container_t::iterator &it, int d);
 
 		void		_sortIntoPairs();
 		void		_mergeSortPairs(pairs_t &pairs, int left, int right);
@@ -49,7 +50,6 @@ class PmergeMe
 		void		_genJacobsthalSeq();
 		void		_insertJacobsthalNums();
 		void		_insertRemainingNums();
-		void		_advance(typename container_t::iterator &it, int d);
 
 };
 
