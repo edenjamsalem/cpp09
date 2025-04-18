@@ -16,7 +16,7 @@ class RPN
 		RPN& operator=(const RPN& other);
 		~RPN();
 
-		void	add(int nbr);
+		void	add(std::string &nbr);
 		void	applyOp(std::string &op);
 		void	calculate(std::string &equation);
 

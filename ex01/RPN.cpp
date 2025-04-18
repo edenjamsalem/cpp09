@@ -25,12 +25,12 @@ bool isoperator(std::string &op)
     return (op == "+" || op == "-" || op == "*" || op == "/");
 }
 
-void RPN::add(int nbr)
+void RPN::add(std::string &nbr)
 {
-	if (nbr < 0 || nbr > 9)
+	if (nbr.length() != 1)
 		throw invalidNumber();
 
-	_stack.push(nbr);
+	_stack.push(nbr[0] - '0');
 }
 
 void RPN::applyOp(std::string &op)
@@ -67,7 +67,7 @@ void	RPN::calculate(std::string &equation)
 		while (ss >> elem) 
 		{
 			if (isdigit(elem[0]))
-				add(atoi(&elem[0]));
+				add(elem);
 			else
 				applyOp(elem);
 		}
