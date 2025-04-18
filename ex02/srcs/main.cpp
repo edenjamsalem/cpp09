@@ -8,15 +8,19 @@ int main(int argc, char **argv)
 	}
 	try 
 	{
-		PmergeMe<std::vector> mergeVec(argv + 1, argc - 1);
-		PmergeMe<std::list> mergeList(argv + 1, argc - 1);
-		PmergeMe<std::deque> mergeDeque(argv + 1, argc - 1);
+		PmergeMe<std::vector>	mergeVec;
+		PmergeMe<std::list>		mergeList;
+		PmergeMe<std::deque>	mergeDeque;
 
-		std::cout << "Before: " << mergeVec << std::endl;
-		mergeVec.mergeInsertSort();
-		mergeList.mergeInsertSort();
-		mergeDeque.mergeInsertSort();
-		std::cout << "After: " << mergeVec << std::endl;
+		mergeVec.mergeInsertSort(argv + 1, argc - 1);
+		mergeList.mergeInsertSort(argv + 1, argc - 1);
+		mergeDeque.mergeInsertSort(argv + 1, argc - 1);
+
+		std::cout << "Before: " << BLUE << mergeVec.getContainerElems(mergeVec.getInitial()) << RESET << std::endl;
+		std::cout << "After: " << GREEN << mergeVec.getContainerElems(mergeVec.getSorted()) << RESET << std::endl;
+		mergeVec.printTimeTaken();
+		mergeList.printTimeTaken();
+		mergeDeque.printTimeTaken();
 	}
 	catch (std::exception &e)
 	{
