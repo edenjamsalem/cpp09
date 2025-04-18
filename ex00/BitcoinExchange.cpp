@@ -38,7 +38,7 @@ bool    BitcoinExchange::validDate(std::string &date)
     int month = atoi(monthStr.c_str());
     int day = atoi(dayStr.c_str());
 
-    if (year < 0 || month < 1 || month > 12 || day < 1)
+    if (year < 0 || year > 2025 || month < 1 || month > 12 || day < 1)
         return false;
 
     int maxDay;

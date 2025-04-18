@@ -22,7 +22,6 @@ class BitcoinExchange
 		~BitcoinExchange();
 
 		std::map<std::string, double> &getPriceMap();
-		std::map<std::string, double> &getDateAmountsMap();
 		
 		void	parseExchangeRateFile();
 		void	genOutputFromInfile(const char *inFile);
