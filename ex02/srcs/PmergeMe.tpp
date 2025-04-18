@@ -37,11 +37,11 @@ template<template<typename, typename> class Container >
 std::string PmergeMe<Container>::getContainerType()
 {
 	std::string typeData = typeid(container_t).name();	
-	if (typeData == "St6vectorIiSaIiEE")
+	if (typeData.find("vector") != std::string::npos)
 		return ("std::vector");
-	else if (typeData == "NSt7__cxx114listIiSaIiEEE")
+	else if (typeData.find("list") != std::string::npos)
 		return ("std::list");
-	else if (typeData == "St5dequeIiSaIiEE")
+	else if (typeData.find("deque") != std::string::npos)
 		return ("std::deque");
 	return ("unknown container");
 }
